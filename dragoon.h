@@ -6,6 +6,9 @@
 
 class Dragoon: public Knight
 {
+
+  friend ostream &operator<<(ostream &, const Character &);
+  
   public:
     Dragoon();
     Dragoon(string, int, int, int, int, int, int, int, int, bool);   
