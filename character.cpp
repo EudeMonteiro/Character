@@ -27,7 +27,7 @@ Character::Character()
 };
 
 Character::Character(const Character &other):name(other.name), hp(other.hp), mp(other.mp), attack(other.attack), defense(other.defense), 
-magic(other.defense), evasion(other.evasion)
+magic(other.magic), evasion(other.evasion)
 {
   
 };
