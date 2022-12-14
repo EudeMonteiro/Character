@@ -17,7 +17,7 @@ MysticKnight::MysticKnight(string name, int hp, int mp, int attack, int defense,
 
 
 MysticKnight::MysticKnight(const MysticKnight & otherMysticKnight)
-:Knight(static_cast< Knight >( otherMysticKnight ))
+:Knight(otherMysticKnight)
 {
   this->element_imbuition = otherMysticKnight.element_imbuition;
 };
@@ -70,6 +70,13 @@ void MysticKnight::imbueElement()
   return;
 }; 
 
+void MysticKnight::guard()
+{
+  defense = ceil(defense * 1.4);
+  cout << "Defesa aumentada!" << '\n';
+}
+
+
 void MysticKnight::spellblade()
 {
   if(element_imbuition != "")
@@ -97,9 +104,21 @@ void MysticKnight::magicShell()
   return;
 }
 
+void MysticKnight::last_stand()
+{
+  if(hp<=5){
+    cout << "Você ataca com todas as suas forças para um golpe final!";
+    attack *=2;
+    return;
+  }
+
+  cout << "Você não está em condições para utilizar este ataque.";
+  return;
+}
+
 ostream &operator<<(ostream &out, const MysticKnight &mystic_knight)
 {
-  out << static_cast< Character > (mystic_knight);
+  mystic_knight.printStats();
 
   string element = mystic_knight.getElementalImbuition();
   if(element == ""){
@@ -114,10 +133,37 @@ ostream &operator<<(ostream &out, const MysticKnight &mystic_knight)
 
 const MysticKnight &MysticKnight::operator=( const MysticKnight &right )
 {
-  *static_cast<MysticKnight * >(this) = static_cast< MysticKnight >( right );
-
-  this->element_imbuition = right.element_imbuition;
+  name = right.name;
+  hp = right.hp;
+  mp = right.mp;
+  attack = right.attack;
+  defense = right.defense;
+  magic = right.magic;
+  evasion = right.evasion;
+  vigor = right.vigor;
+  resistance = right.resistance;
+  element_imbuition = right.element_imbuition;
   
   return *this;
 }
 
+bool MysticKnight::operator==(const MysticKnight &right) const
+{ 
+  return ((name == right.name) &&
+          (hp == right.hp) &&
+          (mp == right.mp) &&
+          (attack == right.attack) &&
+          (defense == right.defense) &&
+          (magic == right.magic) &&
+          (evasion == right.evasion) &&
+          (vigor == right.vigor) &&
+          (resistance == right.resistance) &&
+          (element_imbuition == right.element_imbuition));
+  
+}
+
+
+bool MysticKnight::operator!=(const MysticKnight &right) const
+{
+  return !(*this == right);
+}

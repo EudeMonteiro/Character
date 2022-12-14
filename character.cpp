@@ -8,29 +8,22 @@ Character::Character(string name, int hp, int mp, int attack, int defense, int m
   setAttack(attack);
   setDefense(defense);
   setMagic(magic);
-  setEvasion(evasion);
-
-  
+  setEvasion(evasion);  
 };
 
 Character::Character()
 { 
-
   setName("Unknown Hero");
-  setHp(50);
-  setMp(20);
-  setAttack(10);
+  setHp(500);
+  setMp(50);
+  setAttack(20);
   setDefense(8);
   setMagic(5);
-  setEvasion(3);
-  
+  setEvasion(3);  
 };
 
 Character::Character(const Character &other):name(other.name), hp(other.hp), mp(other.mp), attack(other.attack), defense(other.defense), 
-magic(other.magic), evasion(other.evasion)
-{
-  
-};
+magic(other.magic), evasion(other.evasion){};
 
 Character::~Character(){};
 
@@ -47,7 +40,7 @@ void Character::setName(string char_name)
 
 void Character::setHp(int health)
 {
-  if(hp > 0){
+  if(health > 0){
     this->hp = health;
     return;
   }
@@ -115,22 +108,45 @@ int Character::getDefense() const { return defense;};
 int Character::getMagic() const { return magic;};
 int Character::getEvasion() const{ return evasion;};
 
-void Character::useItem()
+
+void Character::generateRandomDamage(int damage, Character &enemy)
 {
+  //generates random numbers
+  double lower_bound = -log(damage);
+  double upper_bound = log(damage);
+  
+  double deviation = (upper_bound - lower_bound) * ( (double)rand() / (double)RAND_MAX ) + lower_bound;
+    
+  damage += int(deviation);
+  enemy.setHp(enemy.getHp() - damage);
+}
+
+void Character::useItem()
+{ 
+
+  if(itemAmount == 0)
+  {
+    cout << "Você não tem mais items!" << '\n';
+    return;
+  }
+
   string option;
 
   cout << "Escolha um item: Ether / Poção / Elixir: ";
   cin >> option;
 
+
   if(option == "ether"){
     mp+=50;
     cout << "Você usou um Ether! Seu MP foi aumentado em +50!\n";
+    itemAmount--;
     return;
   }
 
   else if(option == "poção"){
     hp+=70;
     cout << "Você usou uma Poção! Seu HP foi aumentado em +70!\n";
+    itemAmount--;
     return;
   }
 
@@ -138,6 +154,7 @@ void Character::useItem()
     mp+=100;
     hp+=100;
     cout << "Você usou um Elixir! Seu HP e MP foram aumentados em +100!\n";
+    itemAmount--;
     return;
   }
 
@@ -145,6 +162,7 @@ void Character::useItem()
   return;
 }; 
 
+/*
 ostream &operator<<(ostream &out, const Character &character)
 { 
   out << "Nome: " << character.getName() << '\n';
@@ -157,16 +175,32 @@ ostream &operator<<(ostream &out, const Character &character)
 
   return out;
 }
+*/
+
+void Character::printStats() const
+{
+  cout << "Nome: " << getName() << '\n';
+  cout << "HP: " << getHp() << '\n';
+  cout << "MP: " << getMp() << '\n';
+  cout << "Ataque: " << getAttack() << '\n';
+  cout << "Defesa: " << getDefense() << '\n';
+  cout << "Magia: " << getMagic() << '\n';
+  cout << "Evasão: " << getEvasion() << '\n';
+  return;
+}
+
 
 bool Character::operator!() const
 {
   return hp == 0;
 }
 
+/*
 bool Character::operator!=(const Character &right) const
 {
   return !( *this == right);
 }
+
 
 const Character &Character::operator=( const Character &right )
 {
@@ -187,19 +221,15 @@ const Character &Character::operator=( const Character &right )
   return *this;   
 }
 
+
 bool Character::operator==(const Character &right) const
 {
-  if ((name == right.name) &&
-      (hp == right.hp) &&          
-      (mp == right.mp) &&
-      (attack == right.attack) &&
-      (defense == right.defense) &&
-      (magic == right.magic) &&
-      (evasion == right.evasion))
-      {
-        return true;
-      };
-
-  return false;
-  
+  return ((name == right.name) &&
+          (hp == right.hp) &&
+          (mp == right.mp) &&
+          (attack == right.attack) &&
+          (defense == right.defense) &&
+          (magic == right.magic) &&
+          (evasion == right.evasion));    
 }
+*/

@@ -16,18 +16,17 @@ class Mage : public Character
     ~Mage();
 
 
-    void arcanePower();
+    void fight(Character &);    
     void arcaneShield();
-    void useMagic();
-    void dualcast();
+    void useMagic(Character &);
+    void dualcast(Character &);
     void setMagicDefense(int);
     void setMagicEvasion(int);
     int getMagicEvasion() const;
-    int getMagicDefense() const;
-    int calculateEffectiveDefense() const;
-    int calculateEffectiveEvasion() const;
+    int getMagicDefense() const;    
     const Mage &operator=(const Mage &);
-    
+    bool operator==(const Mage &) const;
+    bool operator!=(const Mage &) const;
 
   protected:
     int magic_defense;

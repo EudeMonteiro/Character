@@ -6,7 +6,7 @@
 class Knight : public Character
 {
   
-  friend ostream &operator<<(ostream &, const Knight &);
+  //friend ostream &operator<<(ostream &, const Knight &);
 
   public:
     
@@ -15,22 +15,25 @@ class Knight : public Character
     Knight(const Knight &);
     ~Knight();
 
-
-    void guard();
-    void twoHands();
-    void last_stand();
-    void desperate(); 
+    void fight(Character &);
+    virtual void guard() = 0;
+    virtual void last_stand() = 0;
+    void royalBoost();
+    void printStats() const;
     void setVigor(int);
     void setResistance(int);
     int getVigor() const;
     int getResistance() const;
     int calculateEffectiveHP() const;
     int calculateEffectiveDefense() const;    
-    const Knight &operator=(const Knight &);    
+    
 
   protected:
     int resistance;
     int vigor;
+    bool royalBoostFlag;
+
+
 
 };
 

@@ -15,16 +15,16 @@ Dragoon::Dragoon(string name, int hp, int mp, int attack, int defense, int magic
 };
 
 
-Dragoon::~Dragoon()
-{  
-};
 
 Dragoon::Dragoon(const Dragoon & otherDragoon)
-:Knight(static_cast< Knight >( otherDragoon ))
+:Knight(otherDragoon )
 {
   this->on_air = otherDragoon.on_air;  
 };
 
+Dragoon::~Dragoon()
+{  
+};
 
 void Dragoon::jump()
 {
@@ -34,9 +34,34 @@ void Dragoon::jump()
   }
 
   cout << "O dragão ascende aos céus para atacar furiosamente!\n";
+  return;
 }
 
-void Dragoon::aerial_strike()
+void Dragoon::guard()
+{
+  if(on_air){
+    cout << "Você não pode se defender no ar!\n";
+    return;
+  }
+
+  defense = ceil(defense * 1.3);
+  return;
+}
+
+void Dragoon::last_stand()
+{
+  if(hp<=5 && on_air){
+    cout << "Você ataca com todas as suas forças para um golpe final!";
+    attack *=2;
+    aerialStrike();
+    return;
+  }
+
+  cout << "Você não está em condições para utilizar este ataque.";
+  return;
+}
+
+void Dragoon::aerialStrike()
 {
   if(on_air)
   {
@@ -47,29 +72,63 @@ void Dragoon::aerial_strike()
   cout << "Você atacou dos céus com poderio magnificado!!\n";
 }
 
-bool Dragoon::getIsOnAir() const
+void Dragoon::setOnAirStatus(bool status)
+{
+  this->on_air = status;
+  return;
+}
+
+bool Dragoon::getOnAirStatus() const
 {
   return on_air;
 }
 
 ostream &operator<<(ostream &out, const Dragoon &dragoon)
 {
-  out << static_cast< Character > (dragoon);
+  dragoon.printStats();
 
-  string air = dragoon.getIsOnAir()? "Sim":"Não";
+  string air = dragoon.getOnAirStatus()? " Sim":" Não";
 
   out << "Está no ar?: " << air << '\n';  
 
   return out;
-
 }
 
 
 const Dragoon &Dragoon::operator=( const Dragoon &right )
 {
-  *static_cast<Dragoon * >(this) = static_cast< Dragoon >( right );
-
-  this->on_air = right.on_air;
+  name = right.name;
+  hp = right.hp;
+  mp = right.mp;
+  attack = right.attack;
+  defense = right.defense;
+  magic = right.magic;
+  evasion = right.evasion;
+  vigor = right.vigor;
+  resistance = right.resistance;
+  on_air = right.on_air;
   
   return *this;
 }
+
+bool Dragoon::operator==(const Dragoon &right) const
+{ 
+  return ((name == right.name) &&
+          (hp == right.hp) &&
+          (mp == right.mp) &&
+          (attack == right.attack) &&
+          (defense == right.defense) &&
+          (magic == right.magic) &&
+          (evasion == right.evasion) &&
+          (vigor == right.vigor) &&
+          (resistance == right.resistance) &&
+          (on_air == right.on_air));
+}
+
+
+bool Dragoon::operator!=(const Dragoon &right) const
+{
+  return !(*this == right);
+}
+
+

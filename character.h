@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 #include <math.h>
-
+#include <random>
 
 using std::string;
 using std::cout;
@@ -14,15 +14,18 @@ using std::ostream;
 
 class Character
 {
-  friend ostream &operator<<(ostream &, const Character &);
+  //friend ostream &operator<<(ostream &, const Character &);
 
   public:
     Character();
     Character(string, int, int, int, int, int, int);    
     Character(const Character &);
-    ~Character();
-
+    ~Character();    
     
+    virtual void fight(Character &) = 0;
+    void useItem();
+    void generateRandomDamage(int, Character &);
+
     void setName(string);
     void setHp(int);
     void setMp(int);
@@ -37,11 +40,8 @@ class Character
     int getDefense() const;
     int getMagic() const;
     int getEvasion() const;
-    void useItem();
-
-    const Character &operator=(const Character &);  
-    bool operator==(const Character &) const;
-    bool operator!=(const Character &) const;
+    virtual void printStats() const;
+    
     bool operator!() const;
 
   protected:
@@ -51,8 +51,8 @@ class Character
     int attack;
     int defense;
     int magic;
-    int evasion;    
-
+    int evasion;
+    int itemAmount = 5;
 };
 
 #endif

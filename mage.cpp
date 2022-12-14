@@ -17,16 +17,19 @@ Mage::Mage(string name, int hp, int mp, int attack, int defense, int magic, int 
 };
 
 
-Mage::~Mage()
-{  
-};
 
 Mage::Mage(const Mage & otherMage)
-:Character(static_cast< Character >( otherMage ))
+:Character( otherMage )
 {
   this->magic_defense= otherMage.magic_defense;
   this->magic_evasion = otherMage.magic_evasion;  
 };
+
+
+Mage::~Mage()
+{  
+};
+
 
 void Mage::setMagicDefense(int m_def)
 {
@@ -61,65 +64,81 @@ int Mage::getMagicDefense() const
 };
 
 
-void Mage::arcanePower()
-{
-  mp = ceil(mp * 1.3);
-}
-
-
 void Mage::arcaneShield()
 {
   magic_defense = ceil(mp * 1.5);
 }
 
+void Mage::fight(Character & enemy)
+{ 
+  //Generates random number between 0 and 100
 
-int Mage::calculateEffectiveDefense() const
-{
-  return defense + magic_defense;
+  int evasion_chance = 100 * ( (double)rand() / (double)RAND_MAX );
+  
+  if(evasion_chance <= enemy.getEvasion()){
+    cout << "Você errou o ataque!\n";
+    return;
+  }
+  
+  double damage = attack - (enemy.getDefense()/1.75);
+  
+  //generates random numbers
+  double lower_bound = -log(damage);
+  double upper_bound = log(damage);
+  
+  double deviation = (upper_bound - lower_bound) * ( (double)rand() / (double)RAND_MAX ) + lower_bound;
+    
+  damage += int(deviation);
+  enemy.setHp(enemy.getHp() - damage);
+  
+  return;
 }
 
 
-int Mage::calculateEffectiveEvasion() const
+void Mage::useMagic(Character &enemy)
 {
-  return evasion + magic_evasion;
-}
-
-
-void Mage::useMagic()
-{
-  if(mp-30 < 0)
+  int cost = 30;
+  if(mp-cost < 0)
   {
     cout << "Você não tem MP suficiente para usar magias\n";
     return;
   }
+  
+  double damage = magic - (enemy.getDefense()/1.75);
+  
+  generateRandomDamage(damage, enemy);
 
-  mp-=30;
+  mp-=cost;
   cout << "Você conjurou uma magia arcana!\n";
   return;
 }
 
 
-void Mage::dualcast()
-{
-  if(mp-60 < 0)
+void Mage::dualcast(Character & enemy)
+{ 
+  int cost = 60;
+  if(mp-cost < 0)
   {
     cout << "Você não tem MP suficiente para usar uma magia dupla!\n";
     return;
   }
 
-  mp-=60;
-  magic = ceil(magic * 1.05);
+  mp-=cost;
+  magic = ceil(magic * 1.5);
+
+  double damage = magic - (enemy.getDefense()/1.75);
+  
+  generateRandomDamage(damage, enemy);
+
   cout << "Você conjurou uma magia arcana dual!\n";
   return;
 }
 
 ostream &operator<<(ostream &out, const Mage &mage)
 {
-  out << static_cast< Character > (mage);
+  mage.printStats();
   out << "Defensa mágica: " << mage.getMagicDefense() << '\n';
-  out << "Evasão mágica: " << mage.getMagicEvasion() << '\n';
-  out << "Defesa efetiva: " << mage.calculateEffectiveDefense() << '\n';
-  out << "Evasão efetiva: " << mage.calculateEffectiveEvasion() << '\n';  
+  out << "Evasão mágica: " << mage.getMagicEvasion() << '\n';    
 
   return out;
 
@@ -128,10 +147,35 @@ ostream &operator<<(ostream &out, const Mage &mage)
 
 const Mage &Mage::operator=( const Mage &right )
 {
-  *static_cast<Character * >(this) = static_cast< Character >( right );
-
-  this->magic_defense = right.magic_defense;
-  this->magic_evasion = right.magic_evasion;
+  name = right.name;
+  hp = right.hp;
+  mp = right.mp;
+  attack = right.attack;
+  defense = right.defense;
+  magic = right.magic;
+  evasion = right.evasion;
+  magic_defense = right.magic_defense;
+  magic_evasion = right.magic_evasion;
 
   return *this;
+}
+
+bool Mage::operator!=(const Mage &right) const
+{
+  return !(*this == right);
+}
+
+bool Mage::operator==(const Mage &right) const
+{ 
+  return ((name == right.name) &&
+          (hp == right.hp) &&
+          (mp == right.mp) &&
+          (attack == right.attack) &&
+          (defense == right.defense) &&
+          (magic == right.magic) &&
+          (evasion == right.evasion) &&
+          (magic_evasion == right.magic_evasion) && 
+          (magic_defense == right.magic_defense));
+
+  return true;
 }

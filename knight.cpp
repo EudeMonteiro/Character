@@ -17,40 +17,46 @@ Knight::Knight(string name, int hp, int mp, int attack, int defense, int magic, 
 };
 
 
-Knight::~Knight()
-{  
-};
-
 Knight::Knight(const Knight & otherKnight)
-:Character(static_cast< Character >( otherKnight ))
+:Character(otherKnight)
 {
   this->vigor = otherKnight.vigor;
   this->resistance = otherKnight.resistance;  
 };
 
-
-void Knight::guard()
-{
-  defense = ceil(defense * 1.5);
-  cout << "Defesa aumentada!" << '\n';
+Knight::~Knight()
+{  
 };
 
+void Knight::fight(Character & enemy){
+  double damage = (2 * attack) - enemy.getDefense()/1.75;
+  
+  //generates random numbers
+  double lower_bound = -log(damage);
+  double upper_bound = log(damage);
+  
+  double deviation = (upper_bound - lower_bound) * ( (double)rand() / (double)RAND_MAX ) + lower_bound;
+  
+  damage = (2 * attack) - enemy.getDefense()/1.75;
+  damage = damage + int(deviation);
+  
+  enemy.setHp(enemy.getHp() - damage);
+  return;
+}
 
-void Knight::twoHands()
+
+void Knight::royalBoost()
 {
-  attack *= 2;
-  cout << "Ataque duplicado!" << '\n';
-
-};
-
-
-void Knight::last_stand()
-{
-  if(hp<=5){
-    attack *= 3;
-    defense = 0;
+  if(!royalBoostFlag){
+    setHp(hp + ceil(vigor * 0.7) + ceil(resistance * 0.8));
+    cout << "Vitalidade amplificada!" << '\n';
+    royalBoostFlag = true;
+    return;
   }
+
+  cout << "Você já usou esta habilidade!";
 };
+
 
 void Knight::setVigor(int vigor_)
 {
@@ -95,26 +101,52 @@ int Knight::calculateEffectiveDefense() const
   return ceil((defense + resistance)*1.5);
 }
 
-ostream &operator<<(ostream &out, const Knight &knight)
+void Knight::printStats() const
 {
-  out << static_cast< Character > (knight);
-  out << "Vigor: " << knight.getVigor() << '\n';
-  out << "Resistência: " << knight.getResistance() << '\n';
-  out << "Defesa efetiva: " << knight.calculateEffectiveDefense() << '\n';
-  out << "HP efetivo: " << knight.calculateEffectiveHP() << '\n';  
 
-  return out;
+  Character::printStats( );
+  cout << "Vigor: " << getVigor() << '\n';
+  cout << "Resistência: " << getResistance() << '\n';
+  cout << "Defesa efetiva: " << calculateEffectiveDefense() << '\n';
+  cout << "HP efetivo: " << calculateEffectiveHP() << '\n';
 
+  return;
 }
 
-
+/*
 const Knight &Knight::operator=( const Knight &right )
 {
-  *static_cast<Character * >(this) = static_cast< Character >( right );
-
-  this->vigor = right.vigor;
-  this->resistance = right.resistance;
+  name = right.name;
+  hp = right.hp;
+  mp = right.mp;
+  attack = right.attack;
+  defense = right.defense;
+  magic = right.magic;
+  evasion = right.evasion;
+  vigor = right.vigor;
+  resistance = right.resistance;
 
   return *this;
 }
 
+bool Knight::operator==(const Knight &right) const
+{   
+  return ((name == right.name) &&
+          (hp == right.hp) &&
+          (mp == right.mp) &&
+          (attack == right.attack) &&
+          (defense == right.defense) &&
+          (magic == right.magic) &&
+          (evasion == right.evasion) &&
+          (vigor == right.vigor)&&
+          (resistance == right.resistance)); 
+  
+}
+*/
+
+/*
+bool Knight::operator!=(const Knight &right) const
+{
+  return !(*this == right);
+}
+*/

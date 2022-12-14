@@ -6,7 +6,7 @@
 
 class MysticKnight: public Knight
 { 
-  friend ostream &operator<<(ostream &, const Knight &);
+  friend ostream &operator<<(ostream &, const MysticKnight &);
 
   public:
     MysticKnight();
@@ -14,12 +14,16 @@ class MysticKnight: public Knight
     MysticKnight(const MysticKnight &);
     ~MysticKnight();
 
+    void guard();
+    void last_stand();
     void imbueElement();
     void magicShell();
     void spellblade();
     string getElementalImbuition() const;
 
     const MysticKnight &operator=(const MysticKnight &);
+    bool operator==(const MysticKnight &) const;
+    bool operator!=(const MysticKnight &) const;
     
   private:
     string element_imbuition;
