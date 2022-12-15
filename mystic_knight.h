@@ -15,10 +15,10 @@ class MysticKnight: public Knight
     ~MysticKnight();
 
     void guard();
-    void last_stand();
+    void last_stand(Character &);
     void imbueElement();
     void magicShell();
-    void spellblade();
+    void spellblade(Character &);
     string getElementalImbuition() const;
 
     const MysticKnight &operator=(const MysticKnight &);

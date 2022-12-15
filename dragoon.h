@@ -17,8 +17,8 @@ class Dragoon: public Knight
 
     void jump();
     void guard();
-    void last_stand();
-    void aerialStrike();
+    void last_stand(Character &);
+    void aerialStrike(Character &);
     void setOnAirStatus(bool);
     bool getOnAirStatus() const;
 

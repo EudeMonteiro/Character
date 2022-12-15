@@ -20,11 +20,11 @@ class Character
     Character();
     Character(string, int, int, int, int, int, int);    
     Character(const Character &);
-    ~Character();    
+    virtual ~Character();
     
     virtual void fight(Character &) = 0;
     void useItem();
-    void generateRandomDamage(int, Character &);
+    void generateRandomDamage(double, Character &);
 
     void setName(string);
     void setHp(int);

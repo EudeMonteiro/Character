@@ -13,11 +13,11 @@ class Knight : public Character
     Knight();
     Knight(string, int, int, int, int, int, int, int, int);   
     Knight(const Knight &);
-    ~Knight();
+    virtual ~Knight();
 
     void fight(Character &);
     virtual void guard() = 0;
-    virtual void last_stand() = 0;
+    virtual void last_stand(Character &) = 0;
     void royalBoost();
     void printStats() const;
     void setVigor(int);
@@ -32,8 +32,6 @@ class Knight : public Character
     int resistance;
     int vigor;
     bool royalBoostFlag;
-
-
 
 };
 

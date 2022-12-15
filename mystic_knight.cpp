@@ -45,25 +45,27 @@ void MysticKnight::imbueElement()
   }
 
   if(option == "fogo"){
+    int cost = 20;
     element_imbuition = "Fogo";
     cout << "Você imbuiu sua espada com a ardente chama!\n";
-    mp -= 20;
-    return;
+    mp -= cost;
+    attack = ceil(attack * 1.2);
   }
 
   else if(option == "gelo"){
+    int cost = 25;
     element_imbuition = "Gelo";
     cout << "Você imbuiu sua espada com o frio glacial!\n";
-    mp -= 20;
-    return;
+    mp -= cost;    
+    attack = ceil(attack * 1.3);
   }
 
   else if(option == "eletricidade"){
-    
+    int cost = 30;
     element_imbuition = "Eletricidade";
     cout << "Você imbuiu sua espada com a fulgurosa eletricidade!\n";
-    mp -= 20;
-    return;
+    mp -= cost;
+    attack = ceil(attack * 1.4);    
   }
 
   cout << "Item inválido.\n";
@@ -77,16 +79,19 @@ void MysticKnight::guard()
 }
 
 
-void MysticKnight::spellblade()
+void MysticKnight::spellblade(Character &enemy)
 {
   if(element_imbuition != "")
   {
     attack = ceil(attack*1.3);
-    
+    fight(enemy);
+    cout << "Você desferiu um ataque elemental do tipo " << getElementalImbuition() << '\n';
+    element_imbuition = "";
+    attack = ceil(attack*0.7);
+    return;
   }
 
-  cout << "Você desferiu um ataque elemental do tipo " << getElementalImbuition() << '\n';
-  element_imbuition = "";
+  cout << "Sua espada não está imbuída com o poder de nenhum elemento...\n";
   return;
 }
 
@@ -104,11 +109,12 @@ void MysticKnight::magicShell()
   return;
 }
 
-void MysticKnight::last_stand()
+void MysticKnight::last_stand(Character &enemy)
 {
   if(hp<=5){
     cout << "Você ataca com todas as suas forças para um golpe final!";
     attack *=2;
+    fight(enemy);
     return;
   }
 

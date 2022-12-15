@@ -48,28 +48,34 @@ void Dragoon::guard()
   return;
 }
 
-void Dragoon::last_stand()
+void Dragoon::last_stand(Character &enemy)
 {
   if(hp<=5 && on_air){
-    cout << "Você ataca com todas as suas forças para um golpe final!";
+    cout << "Você ataca com todas as suas forças para um golpe final!\n";
     attack *=2;
-    aerialStrike();
+    aerialStrike(enemy);
     return;
   }
 
-  cout << "Você não está em condições para utilizar este ataque.";
+  cout << "Você não está em condições para utilizar este ataque.\n";
   return;
 }
 
-void Dragoon::aerialStrike()
+void Dragoon::aerialStrike(Character &enemy)
 {
+  int tempAtk = attack;
   if(on_air)
   {
     attack += 20;
+    fight(enemy);
+    setAttack(tempAtk);
+    cout << "Você atacou dos céus com poderio magnificado!!\n";
     on_air = false;
+    return;
   }
 
-  cout << "Você atacou dos céus com poderio magnificado!!\n";
+  cout << "Você não está no ar!";
+  return;
 }
 
 void Dragoon::setOnAirStatus(bool status)

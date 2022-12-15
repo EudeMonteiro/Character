@@ -29,18 +29,10 @@ Knight::~Knight()
 };
 
 void Knight::fight(Character & enemy){
-  double damage = (2 * attack) - enemy.getDefense()/1.75;
-  
-  //generates random numbers
-  double lower_bound = -log(damage);
-  double upper_bound = log(damage);
-  
-  double deviation = (upper_bound - lower_bound) * ( (double)rand() / (double)RAND_MAX ) + lower_bound;
-  
-  damage = (2 * attack) - enemy.getDefense()/1.75;
-  damage = damage + int(deviation);
-  
-  enemy.setHp(enemy.getHp() - damage);
+  double damage = (2 * attack) - enemy.getDefense()/1.75;  
+  generateRandomDamage(damage, enemy);
+
+  cout << "Você desfere um golpe físico contra seu oponente!" << '\n';
   return;
 }
 

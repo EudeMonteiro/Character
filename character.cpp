@@ -14,11 +14,11 @@ Character::Character(string name, int hp, int mp, int attack, int defense, int m
 Character::Character()
 { 
   setName("Unknown Hero");
-  setHp(500);
+  setHp(250);
   setMp(50);
   setAttack(20);
   setDefense(8);
-  setMagic(5);
+  setMagic(20);
   setEvasion(3);  
 };
 
@@ -45,7 +45,7 @@ void Character::setHp(int health)
     return;
   }
 
-  this->hp = 50;
+  this->hp = 0;
 };
 
 void Character::setMp(int magic_points)
@@ -109,16 +109,16 @@ int Character::getMagic() const { return magic;};
 int Character::getEvasion() const{ return evasion;};
 
 
-void Character::generateRandomDamage(int damage, Character &enemy)
+void Character::generateRandomDamage(double damage, Character &enemy)
 {
   //generates random numbers
   double lower_bound = -log(damage);
   double upper_bound = log(damage);
   
   double deviation = (upper_bound - lower_bound) * ( (double)rand() / (double)RAND_MAX ) + lower_bound;
-    
+  
   damage += int(deviation);
-  enemy.setHp(enemy.getHp() - damage);
+  enemy.setHp(enemy.getHp() - damage);  
 }
 
 void Character::useItem()

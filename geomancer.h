@@ -13,9 +13,9 @@ class Geomancer: public Mage
     Geomancer(const Geomancer &);
     ~Geomancer();
 
-    void earthquake();
-    void windSlash();
-    void sandstorm();    
+    void earthquake(Character &);
+    void windSlash(Character &);
+    void sandstorm(Character &);    
     void setEarthquakeStatus(bool);
     bool getEarthquakeStatus() const;
 
